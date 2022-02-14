@@ -1,0 +1,34 @@
+{
+    "title": "@appwrite/ui",
+    "logoSrc": "/logo.svg",
+    "theme": {
+        "pageHeadingBackground": "#f02e65"
+    },
+    "pages": [
+        {
+            "path": "/",
+            "title": "Introduction",
+            "src": "demo/intro.md"
+        },
+        {
+            "path": "/typography",
+            "title": "Typography",
+            "src": "demo/typography.md"
+        },
+        {
+            "title": "Components",
+            "pages": [
+              {
+                "path": "/components/button",
+                "title": "Button",
+                "src": "demo/components/button.md"
+              },
+              {
+                "path": "/components/input",
+                "title": "Input",
+                "src": "demo/components/input.md"
+              }
+            ]
+          }
+    ]
+}

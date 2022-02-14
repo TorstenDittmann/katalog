@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://assets.ubuntu.com/v1/vanilla-framework-version-3.1.0.min.css" />
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    <header id="navigation" class="p-navigation is-dark">
+        <div class="p-navigation__row">
+            <div class="p-navigation__banner">
+                <div class="p-navigation__logo">
+                    <a class="p-navigation__item" href="#">
+                        <img class="p-navigation__image"
+                            src="https://assets.ubuntu.com/v1/3c7954dd-logo-canonical-white.svg" alt="Canonical"
+                            width="95" />
+                    </a>
+                </div>
+                <a href="#navigation" class="p-navigation__toggle--open" title="menu">Menu</a>
+                <a href="#navigation-closed" class="p-navigation__toggle--close" title="close menu">Close menu</a>
+            </div>
+            <nav class="p-navigation__nav" aria-label="Main navigation">
+                <span class="u-off-screen">
+                    <a href="#main-content">Jump to main content</a>
+                </span>
+                <ul class="p-navigation__items">
+                    <li class="p-navigation__item is-selected">
+                        <a class="p-navigation__link" href="#">Docs</a>
+                    </li>
+                    <li class="p-navigation__item">
+                        <a class="p-navigation__link" href="#">About</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section id="search-docs" class="p-strip--light is-shallow">
+        <div class="row">
+            <form class="p-search-box u-no-margin--bottom">
+                <input type="search" class="p-search-box__input" name="q" placeholder="Search documentation" required=""
+                    autocomplete="on" data-com.bitwarden.browser.user-edited="yes" />
+                <button type="reset" class="p-search-box__reset" name="close">
+                    <i class="p-icon--close">Close</i>
+                </button>
+                <button type="submit" class="p-search-box__button" name="submitSearch">
+                    <i class="p-icon--search">Search</i>
+                </button>
+            </form>
+        </div>
+    </section>
+    <div class="p-strip is-shallow">
+        <div class="row">
+            <aside class="col-3">
+                <nav class="p-side-navigation--raw-html is-sticky" id="drawer" aria-label="Table of contents">
+                    <a href="#drawer" class="p-side-navigation__toggle js-drawer-toggle" aria-controls="drawer">
+                        Toggle side navigation
+                    </a>
+
+                    <div class="p-side-navigation__overlay js-drawer-toggle" aria-controls="drawer"></div>
+
+                    <div class="p-side-navigation__drawer">
+                        <div class="p-side-navigation__drawer-header">
+                            <a href="#" class="p-side-navigation__toggle--in-drawer js-drawer-toggle"
+                                aria-controls="drawer">
+                                Toggle side navigation
+                            </a>
+                        </div>
+                        <h3>Side navigation</h3>
+                        <ul>
+                            {% for page in pages %}
+                               {% if page.pages %}
+                                <li>
+                                    <strong>{{ page.title }}</strong>
+                                    <ul>
+                                        {% for sub in page.pages %}
+                                            <li>
+                                                <a {% if sub.path == currentPage %}aria-current="page"{% endif %} href="{{ sub.path }}">{{ sub.title }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                               {% else %}
+                                <li>
+                                    <a {% if page.path == currentPage %}aria-current="page"{% endif %} href="{{ page.path }}">{{ page.title }}</a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                            <li>
+                                <a href="#"><strong>Sub Section</strong></a>
+                                <ul>
+                                    <li>
+                                        <a href="#">Second level link</a>
+                                    </li>
+                                    <li>
+                                        <a class="" href="#">Current page</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Another second level link</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Last page</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+            <main class="col-9" id="main-content">{{ body }}</main>
+        </div>
+    </div>
+</body>
+
+</html>
