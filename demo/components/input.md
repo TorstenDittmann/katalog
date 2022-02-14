@@ -1,8 +1,4 @@
-```html
-<host-element>
-  <template shadowroot="open">
-    <slot></slot>
-  </template>
-  <h2>Light content</h2>
-</host-element>
 ```
+<iframe srcdoc="<button>test</button>"  onload="this.style.height=(this.contentWindow.document.body.scrollHeight+16)+'px';"/>
+```
+

@@ -22,8 +22,6 @@ const engine = new Liquid({
 });
 const md = new MarkdownIt({
     highlight: (str: string, lang: string, attrs: string) => {
-        console.log({ str, lang, attrs });
-        console.log('str', str);
         return str;
     }
 });
