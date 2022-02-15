@@ -6,7 +6,6 @@ export const createPreviewElement = () => {
             constructor() {
                 super();
                 this.content = this.innerHTML;
-                console.log(this.content)
                 this.innerHTML = '';
 
                 const shadowRoot = this.attachShadow({ mode: 'open' });
@@ -37,7 +36,7 @@ export const createPreviewElement = () => {
                 preview.setAttribute('onload', "this.style.height=(this.contentWindow.document.body.scrollHeight)+'px'");
 
                 preview.srcdoc = `
-                    <style>@import '/_assets/test.css';</style>
+                    <style>${window.STYLESHEETS.map(s => `@import '/_assets/${s}';`).join(' ')}</style>
                     ${this.content}
                 `;
 

@@ -1,10 +1,10 @@
-import { copyFileSync, existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { emptyDirSync, copySync, copy } from "fs-extra";
-import MarkdownIt from "markdown-it";
 import { dirname, join } from "path";
 import { cwd, exit } from "process";
 import { Liquid } from 'liquidjs';
 import { preview_plugin } from "./preview";
+import MarkdownIt from "markdown-it";
 
 export type Page = {
     title: string;
@@ -27,10 +27,10 @@ const md = new MarkdownIt({
     html: true
 });
 md.use(preview_plugin);
-export const parse = async (config: Config) => {
+export const parse = async (config: Config, output: string) => {
     const outputDir = join(
         cwd(),
-        'output'
+        output
     );
     emptyDirSync(outputDir);
     copyRuntime(outputDir);
@@ -53,10 +53,10 @@ export const parse = async (config: Config) => {
             body: content,
             pages: config.pages,
             currentPage: page.path,
+            stylesheets: config.stylesheets
         });
         let target = join(
-            cwd(),
-            'output/',
+            outputDir,
             page.path,
             'index.html'
         );

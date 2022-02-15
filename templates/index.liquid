@@ -111,7 +111,11 @@
             <main class="col-9" id="main-content">{{ body }}</main>
         </div>
     </div>
+    <script>
+        window.STYLESHEETS = [
+            {% for style in stylesheets %}'{{ style }}',{% endfor %}
+        ];
+    </script>
     <script type="module" src="/_runtime/index.js"></script>
 </body>
-
 </html>

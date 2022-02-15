@@ -2,7 +2,7 @@
   "title": "@appwrite/ui",
   "logoSrc": "/logo.svg",
   "stylesheets": [
-    "test.css"
+    "styles.css"
   ],
   "theme": {
     "pageHeadingBackground": "#f02e65"
@@ -11,12 +11,12 @@
     {
       "path": "/",
       "title": "Introduction",
-      "src": "demo/intro.md"
+      "src": "intro.md"
     },
     {
       "path": "/typography",
       "title": "Typography",
-      "src": "demo/typography.md"
+      "src": "typography.md"
     },
     {
       "title": "Elements",
@@ -24,17 +24,17 @@
         {
           "path": "/elements/button",
           "title": "Button",
-          "src": "demo/elements/button.md"
+          "src": "elements/button.md"
         },
         {
           "path": "/elements/pill",
           "title": "Pill",
-          "src": "demo/elements/pill.md"
+          "src": "elements/pill.md"
         },
         {
           "path": "/elements/input",
           "title": "Input",
-          "src": "demo/elements/input.md"
+          "src": "elements/input.md"
         }
       ]
     },
@@ -44,12 +44,12 @@
         {
           "path": "/components/upload-box",
           "title": "Upload Box",
-          "src": "demo/components/upload-box.md"
+          "src": "components/upload-box.md"
         },
         {
           "path": "/components/upload-image",
           "title": "Upload Image",
-          "src": "demo/components/upload-image.md"
+          "src": "components/upload-image.md"
         }
       ]
     }
