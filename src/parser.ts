@@ -20,21 +20,25 @@ export type Config = {
     pages: Page[];
 };
 
-const engine = new Liquid({
-
-});
+const engine = new Liquid();
 const md = new MarkdownIt({
     html: true
 });
 md.use(preview_plugin);
+
 export const parse = async (config: Config, output: string) => {
     const outputDir = join(
         cwd(),
         output
     );
+    console.log('⚙️ Generating your Katalog');
+    console.log(`Destination: ${outputDir}`);
+    console.log(' ')
     emptyDirSync(outputDir);
     copyRuntime(outputDir);
+    console.log('✅ Copied Runtime');
     copyAssets(config.stylesheets, outputDir);
+    console.log('✅ Copied Assets');
     const index = readFileSync(__dirname + '/../templates/index.liquid', 'utf-8');
 
     const generate = async (page: Page) => {
@@ -69,6 +73,7 @@ export const parse = async (config: Config, output: string) => {
         writeFileSync(target, html, {
             encoding: "utf8"
         });
+        console.log(`- generated ${file}`);
     };
 
     config.pages.forEach(async (page: Page) => {
@@ -86,5 +91,8 @@ const copyRuntime = (outputDir: string) => {
     ));
 }
 const copyAssets = (files: string[], outputDir: string) => {
-    files.forEach(file => copy(join(cwd(), file), join(outputDir, '_assets', file)));
+    files.forEach(file => {
+        copy(join(cwd(), file), join(outputDir, '_assets', file))
+        console.log(`- copied ${file}`);
+    });
 }

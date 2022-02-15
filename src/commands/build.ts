@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { cwd, exit } from 'process';
-import type { Arguments, CommandBuilder } from 'yargs';
 import { Config, parse } from '../parser';
+import type { Arguments, CommandBuilder } from 'yargs';
 
 type Options = {
     config: string;
@@ -23,6 +23,7 @@ export const handler = (argv: Arguments<Options>): void => {
     const config: Config = JSON.parse(readFileSync(join(cwd(), argv.config), 'utf8'));
     try {
         parse(config, argv.output);
+        console.log('✅ Generated Pages');
     } catch (error) {
         exit(1);
     }
