@@ -34,7 +34,7 @@ export const createPreviewElement = () => {
                 preview.classList.add('katalog-preview');
                 preview.src = "about:blank";
                 preview.height = "0px";
-                preview.setAttribute('onload',  "this.style.height=(this.contentWindow.document.body.scrollHeight)+'px'");
+                preview.setAttribute('onload', "this.style.height=(this.contentWindow.document.body.scrollHeight)+'px'");
 
                 preview.srcdoc = `
                     <style>@import '/_assets/test.css';</style>

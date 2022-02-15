@@ -24,33 +24,40 @@
                 <div class="p-navigation__logo">
                     <a class="p-navigation__item" href="#">
                         <img class="p-navigation__image"
-                            src="https://assets.ubuntu.com/v1/3c7954dd-logo-canonical-white.svg" alt="Canonical"
+                            src="https://appwrite.io/images/appwrite-footer-dark.svg" alt="Canonical"
                             width="95" />
                     </a>
                 </div>
-                <a href="#navigation" class="p-navigation__toggle--open" title="menu">Menu</a>
-                <a href="#navigation-closed" class="p-navigation__toggle--close" title="close menu">Close menu</a>
             </div>
             <nav class="p-navigation__nav" aria-label="Main navigation">
                 <span class="u-off-screen">
                     <a href="#main-content">Jump to main content</a>
                 </span>
-                <ul class="p-navigation__items">
-                    <li class="p-navigation__item is-selected">
-                        <a class="p-navigation__link" href="#">Docs</a>
-                    </li>
-                    <li class="p-navigation__item">
-                        <a class="p-navigation__link" href="#">About</a>
-                    </li>
-                </ul>
             </nav>
         </div>
     </header>
     <section id="search-docs" class="p-strip--light is-shallow">
         <div class="row">
-            <form class="p-search-box u-no-margin--bottom">
-                <input type="search" class="p-search-box__input" name="q" placeholder="Search documentation" required=""
-                    autocomplete="on" data-com.bitwarden.browser.user-edited="yes" />
+            <form id="search" class="p-search-box u-no-margin--bottom">
+                <input 
+                    list="ice-cream-flavors" 
+                    type="search" 
+                    class="p-search-box__input" 
+                    name="q" 
+                    placeholder="Search documentation" 
+                    required=""
+                    autocomplete="on" />
+                <datalist id="ice-cream-flavors">
+                    {% for page in pages %}
+                        {% if page.pages %}
+                            {% for sub in page.pages %}
+                                <option value="{{sub.path}}" label="{{sub.title}}">
+                            {% endfor %}
+                        {% else %}
+                            <option value="{{page.path}}" label="{{page.title}}">
+                        {% endif %}
+                    {% endfor %}
+                </datalist>
                 <button type="reset" class="p-search-box__reset" name="close">
                     <i class="p-icon--close">Close</i>
                 </button>
@@ -86,14 +93,14 @@
                                     <ul>
                                         {% for sub in page.pages %}
                                             <li>
-                                                <a {% if sub.path == currentPage %}aria-current="page"{% endif %} href="{{ sub.path }}">{{ sub.title }}</a>
+                                                <a {% if sub.path == currentPage %}aria-current="page" href="#"{% else %} href="{{ sub.path }}"{% endif %}>{{ sub.title }}</a>
                                             </li>
                                         {% endfor %}
                                     </ul>
                                 </li>
                                {% else %}
                                 <li>
-                                    <a {% if page.path == currentPage %}aria-current="page"{% endif %} href="{{ page.path }}">{{ page.title }}</a>
+                                    <a {% if page.path == currentPage %}aria-current="page" href="#"{% else %} href="{{ page.path }}"{% endif %}>{{ page.title }}</a>
                                 </li>
                                 {% endif %}
                             {% endfor %}
