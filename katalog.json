@@ -1,6 +1,9 @@
 {
   "title": "@appwrite/ui",
   "logoSrc": "/logo.svg",
+  "stylesheets": [
+    "test.css"
+  ],
   "theme": {
     "pageHeadingBackground": "#f02e65"
   },

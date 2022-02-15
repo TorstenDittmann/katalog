@@ -110,18 +110,6 @@ export const preview_plugin: PluginSimple = (md) => {
         token.markup = state.src.slice(start, pos);
         token.block = true;
 
-        token = state.push('preview_open', 'katalog-source', 1);
-        token.markup = markup;
-        token.block = true;
-        token.info = params;
-
-        token.map = [startLine, nextLine];
-        state.md.block.tokenize(state, startLine + 1, nextLine);
-
-        token = state.push('preview_close', 'katalog-source', -1);
-        token.markup = state.src.slice(start, pos);
-        token.block = true;
-
         state.parentType = old_parent;
         state.lineMax = old_line_max;
         state.line = nextLine + (auto_closed ? 1 : 0);

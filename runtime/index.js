@@ -1,5 +1,3 @@
-import { createPreviewElement } from "./preview";
+import { createPreviewElement } from "./preview.js";
 
-document.addEventListener('load', () => {
-    createPreviewElement();
-})
+createPreviewElement();

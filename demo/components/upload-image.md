@@ -3,6 +3,7 @@
 :::preview
 <div class="upload-image">
     <div class="progress"
+         style="--progress: 20"
          role="progressbar" 
          aria-valuenow="20" 
          aria-valuemin="0" 

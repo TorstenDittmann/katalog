@@ -1,4 +1,5 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { copyFileSync, existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
+import { emptyDirSync, copySync, copy } from "fs-extra";
 import MarkdownIt from "markdown-it";
 import { dirname, join } from "path";
 import { cwd, exit } from "process";
@@ -15,6 +16,7 @@ export type Config = {
     title: string;
     logoSrc: string;
     theme: object;
+    stylesheets: string[];
     pages: Page[];
 };
 
@@ -26,7 +28,15 @@ const md = new MarkdownIt({
 });
 md.use(preview_plugin);
 export const parse = async (config: Config) => {
+    const outputDir = join(
+        cwd(),
+        'output'
+    );
+    emptyDirSync(outputDir);
+    copyRuntime(outputDir);
+    copyAssets(config.stylesheets, outputDir);
     const index = readFileSync(__dirname + '/../templates/index.liquid', 'utf-8');
+
     const generate = async (page: Page) => {
         if (!page.src || !page.path) {
             throw new Error("config invalid");
@@ -68,4 +78,13 @@ export const parse = async (config: Config) => {
         }
         generate(page);
     });
+}
+const copyRuntime = (outputDir: string) => {
+    copySync(join(__dirname, '../runtime'), join(
+        outputDir,
+        '_runtime'
+    ));
+}
+const copyAssets = (files: string[], outputDir: string) => {
+    files.forEach(file => copy(join(cwd(), file), join(outputDir, '_assets', file)));
 }

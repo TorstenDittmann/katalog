@@ -6,6 +6,7 @@ export const createPreviewElement = () => {
             constructor() {
                 super();
                 this.content = this.innerHTML;
+                console.log(this.content)
                 this.innerHTML = '';
 
                 const shadowRoot = this.attachShadow({ mode: 'open' });
@@ -15,40 +16,52 @@ export const createPreviewElement = () => {
 
                 const style = document.createElement('style');
                 style.innerHTML = `
-                    @import '/test.css';
-
                     .katalog-source {
                         display: none;
+                        white-space: pre;
                     }
                     .katalog-source.show {
                         display: block;
                     }
-                    .katalog-preview > * {
-                        position: initial;
+                    .katalog-preview {
+                        border: none;
+                        display: block;
+                        width: 100%;
                     }
                 `;
 
-                const preview = document.createElement('div');
+                const preview = document.createElement('iframe');
                 preview.classList.add('katalog-preview');
-                preview.innerHTML = this.content;
+                preview.src = "about:blank";
+                preview.height = "0px";
+                preview.setAttribute('onload',  "this.style.height=(this.contentWindow.document.body.scrollHeight)+'px'");
 
-                this.source = document.createElement('div');
-                this.source.classList.add('katalog-source');
-                this.source.textContent = this.content;
+                preview.srcdoc = `
+                    <style>@import '/_assets/test.css';</style>
+                    ${this.content}
+                `;
+
+                const sourceCode = document.createElement('code')
+                sourceCode.classList.add('katalog-source');
+                sourceCode.textContent = this.content.trim();
+                this.source = document.createElement('pre');
+                this.source.classList.add('u-hide', 'u-no-margin');
+                this.source.appendChild(sourceCode)
 
                 const sourceButton = document.createElement('button');
                 sourceButton.addEventListener('click', () => this.toggle());
-                sourceButton.innerHTML = '<>';
+                sourceButton.classList.add('p-button', 'is-small');
+                sourceButton.innerHTML = 'source';
 
                 container.appendChild(style);
-                container.appendChild(sourceButton);
                 container.appendChild(preview);
-                container.appendChild(this.source);
+                this.insertAdjacentElement('afterend', sourceButton);
+                this.insertAdjacentElement('afterend', this.source);
                 shadowRoot.appendChild(container);
             }
 
             toggle() {
-                this.source.classList.toggle('show');
+                this.source.classList.toggle('u-hide');
             }
         }
     );
