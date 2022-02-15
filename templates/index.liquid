@@ -7,17 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://assets.ubuntu.com/v1/vanilla-framework-version-3.1.0.min.css" />
     <title>{{ title }}</title>
-    <style>
-        katalog-preview {
-            display: block;
-            padding: 1rem;
-            border: 1px lightgrey solid;
-        }
-
-        katalog-preview:not(:defined) {
-            opacity: 0;
-        }
-    </style>
 </head>
 
 <body>
@@ -107,29 +96,11 @@
             <main class="col-9" id="main-content">{{ body }}</main>
         </div>
     </div>
+    <script type="module" src="/runtime/index.js"></script>
     <script type="text/javascript">
         const decodeEscapedHTML = (str) => str.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 
         window.addEventListener('load', (event) => {
-            customElements.define('katalog-preview',
-                class extends HTMLElement {
-                    constructor() {
-                        super();
-                        const shadowRoot = this.attachShadow({ mode: 'open' });
-                        shadowRoot.innerHTML = `
-                            <style>
-                                @import "/test.css";
-
-                                * {
-                                    position: initial !important;
-                                }
-                            </style>
-
-                            <div class="container">${this.innerHTML}</div>
-                        `;
-                    }
-                }
-            );
              customElements.define('katalog-source',
                 class extends HTMLElement {
                     open = false;
