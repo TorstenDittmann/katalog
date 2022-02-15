@@ -1,23 +1,23 @@
 # Primary
 
-```html
+:::preview
 <button class="button">
     Hello world
 </button>
-```
+:::
 
 # Secondary
 
-```html
+:::preview
 <button class="button secondary">
     Hello world
 </button>
-```
+:::
 
 # Disabled
 
-```html
+:::preview
 <button class="button" disabled>
     Hello world
 </button>
-```
+:::

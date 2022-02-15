@@ -1,34 +1,54 @@
 {
-    "title": "@appwrite/ui",
-    "logoSrc": "/logo.svg",
-    "theme": {
-        "pageHeadingBackground": "#f02e65"
+  "title": "@appwrite/ui",
+  "logoSrc": "/logo.svg",
+  "theme": {
+    "pageHeadingBackground": "#f02e65"
+  },
+  "pages": [
+    {
+      "path": "/",
+      "title": "Introduction",
+      "src": "demo/intro.md"
     },
-    "pages": [
+    {
+      "path": "/typography",
+      "title": "Typography",
+      "src": "demo/typography.md"
+    },
+    {
+      "title": "Elements",
+      "pages": [
         {
-            "path": "/",
-            "title": "Introduction",
-            "src": "demo/intro.md"
+          "path": "/elements/button",
+          "title": "Button",
+          "src": "demo/elements/button.md"
         },
         {
-            "path": "/typography",
-            "title": "Typography",
-            "src": "demo/typography.md"
+          "path": "/elements/pill",
+          "title": "Pill",
+          "src": "demo/elements/pill.md"
         },
         {
-            "title": "Components",
-            "pages": [
-              {
-                "path": "/components/button",
-                "title": "Button",
-                "src": "demo/components/button.md"
-              },
-              {
-                "path": "/components/input",
-                "title": "Input",
-                "src": "demo/components/input.md"
-              }
-            ]
-          }
-    ]
+          "path": "/elements/input",
+          "title": "Input",
+          "src": "demo/elements/input.md"
+        }
+      ]
+    },
+    {
+      "title": "Components",
+      "pages": [
+        {
+          "path": "/components/upload-box",
+          "title": "Upload Box",
+          "src": "demo/components/upload-box.md"
+        },
+        {
+          "path": "/components/upload-image",
+          "title": "Upload Image",
+          "src": "demo/components/upload-image.md"
+        }
+      ]
+    }
+  ]
 }

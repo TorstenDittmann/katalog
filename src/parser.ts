@@ -3,6 +3,7 @@ import MarkdownIt from "markdown-it";
 import { dirname, join } from "path";
 import { cwd, exit } from "process";
 import { Liquid } from 'liquidjs';
+import { preview_plugin } from "./preview";
 
 export type Page = {
     title: string;
@@ -21,10 +22,9 @@ const engine = new Liquid({
 
 });
 const md = new MarkdownIt({
-    highlight: (str: string, lang: string, attrs: string) => {
-        return str;
-    }
+    html: true
 });
+md.use(preview_plugin);
 export const parse = async (config: Config) => {
     const index = readFileSync(__dirname + '/../templates/index.liquid', 'utf-8');
     const generate = async (page: Page) => {
