@@ -3,8 +3,18 @@ import { emptyDirSync, copySync, copy } from "fs-extra";
 import { dirname, join } from "path";
 import { cwd, exit } from "process";
 import { Liquid } from 'liquidjs';
-import { preview_plugin } from "./preview";
-import MarkdownIt from "markdown-it";
+// import { preview_plugin } from "./preview";
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkDirective from 'remark-directive'
+import remarkRehype from 'remark-rehype'
+import rehypeFormat from 'rehype-format'
+import rehypeStringify from 'rehype-stringify'
+// import { visit } from 'unist-util-visit'
+// import { h } from 'hastscript'
+import {read} from 'to-vfile'
+import { myRemarkPlugin } from "./preview.js";
+import { fileURLToPath } from "url";
 
 export type Page = {
     title: string;
@@ -20,11 +30,15 @@ export type Config = {
     pages: Page[];
 };
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const engine = new Liquid();
-const md = new MarkdownIt({
-    html: true
-});
-md.use(preview_plugin);
+const md = unified()
+    .use(remarkParse)
+    .use(remarkDirective)
+    .use(myRemarkPlugin)
+    .use(remarkRehype, {allowDangerousHtml: true})
+    .use(rehypeFormat)
+    .use(rehypeStringify, {allowDangerousHtml: true});
 
 export const parse = async (config: Config, output: string) => {
     const outputDir = join(
@@ -42,6 +56,7 @@ export const parse = async (config: Config, output: string) => {
     const index = readFileSync(__dirname + '/../templates/index.liquid', 'utf-8');
 
     const generate = async (page: Page) => {
+        console.log(page.path)
         if (!page.src || !page.path) {
             throw new Error("config invalid");
         }
@@ -51,15 +66,16 @@ export const parse = async (config: Config, output: string) => {
             console.error(`${page.src} not found.`);
             exit(1);
         }
-        const content = md.render(readFileSync(file, 'utf-8'));
+        const content = await md.process(await read(file));
+
         const html = engine.parseAndRenderSync(index, {
             title: config.title,
-            body: content,
+            body: content.toString(),
             pages: config.pages,
             currentPage: page.path,
             stylesheets: config.stylesheets
         });
-        let target = join(
+        const target = join(
             outputDir,
             page.path,
             'index.html'
@@ -78,10 +94,10 @@ export const parse = async (config: Config, output: string) => {
 
     config.pages.forEach(async (page: Page) => {
         if (page.pages) {
-            page.pages.forEach(generate);
+            page.pages.forEach(async (p) => await generate(p));
             return
         }
-        generate(page);
+        await generate(page);
     });
 }
 const copyRuntime = (outputDir: string) => {
