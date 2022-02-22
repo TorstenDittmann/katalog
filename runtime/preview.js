@@ -13,25 +13,6 @@ export const createPreviewElement = () => {
                 const container = document.createElement('div');
                 container.classList.add('katalog-container');
 
-                const script = document.createElement('script');
-                script.innerHTML = `
-                    function getDocHeight(doc) {
-                        doc = doc || document;
-                        const body = doc.body, html = doc.documentElement;
-                        const height = Math.max( body.scrollHeight, body.offsetHeight, 
-                            html.clientHeight, html.scrollHeight, html.offsetHeight );
-                        return height;
-                    }
-
-                    function setIframeHeight(ifrm) {
-                        const doc = ifrm.contentDocument ? ifrm.contentDocument : ifrm.contentWindow.document;
-                        ifrm.style.visibility = 'hidden';
-                        ifrm.style.height = "10px";
-                        ifrm.style.height = getDocHeight( doc ) + 4 + "px";
-                        ifrm.style.visibility = 'visible';
-                    }
-                `;
-
                 const style = document.createElement('style');
                 style.innerHTML = `
                     .katalog-source {
@@ -48,14 +29,10 @@ export const createPreviewElement = () => {
                     }
                 `;
 
-                const preview = document.createElement('iframe');
+                const preview = document.createElement('div');
                 preview.classList.add('katalog-preview');
-                preview.src = "about:blank";
-                preview.height = "0px";
-                preview.setAttribute('onload', "setIframeHeight(this)");
-
-                preview.srcdoc = `
-                    <style>${window.STYLESHEETS.map(s => `@import '/_assets/${s}';`).join(' ')}</style>
+                preview.innerHTML = `
+                    <style>${window.STYLESHEETS.map(s => `@import '/_assets/${s}';`).join('\n')}</style>
                     ${this.content}
                 `;
 
@@ -71,7 +48,6 @@ export const createPreviewElement = () => {
                 sourceButton.classList.add('p-button', 'is-small');
                 sourceButton.innerHTML = 'source';
 
-                container.appendChild(script);
                 container.appendChild(style);
                 container.appendChild(preview);
                 this.insertAdjacentElement('afterend', sourceButton);
