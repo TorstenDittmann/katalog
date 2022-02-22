@@ -3,10 +3,12 @@ export const createPreviewElement = () => {
         class extends HTMLElement {
             content = null;
             source = null;
+            isolated = false;
             constructor() {
                 super();
                 this.content = this.innerHTML;
                 this.innerHTML = '';
+                this.isolated = this.hasAttribute('isolate');
 
                 const shadowRoot = this.attachShadow({ mode: 'open' });
 
@@ -27,10 +29,16 @@ export const createPreviewElement = () => {
                         display: block;
                         width: 100%;
                     }
+                    .katalog-preview.katalog-preview-isolated > * {
+                        position: revert;
+                    }
                 `;
 
                 const preview = document.createElement('div');
                 preview.classList.add('katalog-preview');
+                if (this.isolated) {
+                    preview.classList.add('katalog-preview-isolated')
+                }
                 preview.innerHTML = `
                     <style>${window.STYLESHEETS.map(s => `@import '/_assets/${s}';`).join('\n')}</style>
                     ${this.content}
@@ -50,8 +58,8 @@ export const createPreviewElement = () => {
 
                 container.appendChild(style);
                 container.appendChild(preview);
-                this.insertAdjacentElement('afterend', sourceButton);
                 this.insertAdjacentElement('afterend', this.source);
+                this.insertAdjacentElement('afterend', sourceButton);
                 shadowRoot.appendChild(container);
             }
 

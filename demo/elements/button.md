@@ -9,7 +9,7 @@
 # Secondary
 
 :::preview
-<button class="button secondary">
+<button class="button is-secondary">
     Hello world
 </button>
 :::
@@ -18,6 +18,15 @@
 
 :::preview
 <button class="button" disabled>
+    Hello world
+</button>
+:::
+
+
+# Secondary Disabled
+
+:::preview
+<button class="button is-secondary" disabled>
     Hello world
 </button>
 :::

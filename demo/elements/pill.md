@@ -21,3 +21,20 @@
     text
 </div>
 :::
+
+# Failed
+
+:::preview
+<div class="pill is-failed">
+    text
+</div>
+:::
+
+# Success
+
+:::preview
+<div class="pill is-success">
+    text
+</div>
+:::
+

@@ -1,6 +1,6 @@
 # Primary
 
-:::preview
+:::preview{isolate}
 <section class="upload-box">
     <header class="upload-box-header">
         <h4 class="upload-box-title">
