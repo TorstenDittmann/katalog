@@ -5,40 +5,120 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://assets.ubuntu.com/v1/vanilla-framework-version-3.1.0.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <title>{{ title }}</title>
     <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
         katalog-preview {
             display: block;
             padding: 1rem;
             background-color: #f3f3f3;
             border: 1px lightgray solid;
         }
+        .katalog-container {
+            display: grid;
+            grid-template-columns: 16em 1fr;
+            grid-template-rows: 200px 1fr;
+            gap: 0px 0px;
+            grid-template-areas:
+                "logo header"
+                "nav content";
+        }
+        .katalog-logo {
+            grid-area: logo;
+            display: grid;
+            place-items: center;
+            border: 1px solid lightgrey;
+        }
+        .katalog-header {
+            grid-area: header;
+            background-color: #f02e65;
+        }
+        .katalog-nav {
+            grid-area: nav;
+        }
+        .close-nav,
+        .open-nav {
+            display:none;
+        }
+        @media (max-width: 640px) {
+            .katalog-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr;
+                gap: 0px 0px;
+                grid-template-areas:
+                    "logo"
+                    "header"
+                    "nav"
+                    "content";
+            }
+            .katalog-nav {
+                height: 100vh;
+                width: 100vw;
+                position: absolute;
+                background-color: white;
+                display: none;
+                z-index: 999;
+            }
+            .katalog-nav:target {
+                display: block;
+            }
+            .close-nav,
+            .open-nav {
+                display:initial;
+            }
+        }
+        .katalog-content {
+            grid-area: content;
+            overflow: auto;
+            max-height: calc(100vh - 200px);
+        }
+        .katalog-content .katalog-content-inner {
+            max-width: 64em;
+            padding: 1.5rem;
+        }
+        .katalog-nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        .katalog-nav li strong {
+            padding: 1rem .5rem;
+        }
+        .katalog-nav li a {
+            display: block;
+            color: #000;
+            padding: 1rem 1rem;
+            text-decoration: none;
+        }
+        .katalog-nav li a:hover,
+        .katalog-nav [aria-current='page'] {
+            background-color: #f02e65;
+            color: white;
+        }
+        .u-hide {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
-    <header id="navigation" class="p-navigation is-dark">
-        <div class="p-navigation__row">
-            <div class="p-navigation__banner">
-                <div class="p-navigation__logo">
-                    <a class="p-navigation__item" href="#">
-                        <img class="p-navigation__image"
-                            src="https://appwrite.io/images/appwrite-footer-dark.svg" alt="Canonical"
-                            width="95" />
-                    </a>
-                </div>
-            </div>
-            <nav class="p-navigation__nav" aria-label="Main navigation">
-                <span class="u-off-screen">
-                    <a href="#main-content">Jump to main content</a>
-                </span>
-            </nav>
+    <div class="katalog-container">
+        <div class="katalog-logo">
+            <a href="#nav" class="open-nav">Menu</a>
+            <a class="p-navigation__item" href="#">
+                <img class="p-navigation__image"
+                    src="/_assets/{{ logoSrc }}" alt="Canonical"
+                    width="95" />
+            </a>
         </div>
-    </header>
-    <section id="search-docs" class="p-strip--light is-shallow">
-        <div class="row">
-            <form id="search" class="p-search-box u-no-margin--bottom">
+        <div class="katalog-header">
+            {% comment %} <form id="search" class="p-search-box u-no-margin--bottom">
                 <input 
                     list="ice-cream-flavors" 
                     type="search" 
@@ -64,51 +144,35 @@
                 <button type="submit" class="p-search-box__button" name="submitSearch">
                     <i class="p-icon--search">Search</i>
                 </button>
-            </form>
+            </form> {% endcomment %}
         </div>
-    </section>
-    <div class="p-strip is-shallow">
-        <div class="row">
-            <aside class="col-3">
-                <nav class="p-side-navigation--raw-html is-sticky" id="drawer" aria-label="Table of contents">
-                    <a href="#drawer" class="p-side-navigation__toggle js-drawer-toggle" aria-controls="drawer">
-                        Toggle side navigation
-                    </a>
-
-                    <div class="p-side-navigation__overlay js-drawer-toggle" aria-controls="drawer"></div>
-
-                    <div class="p-side-navigation__drawer">
-                        <div class="p-side-navigation__drawer-header">
-                            <a href="#" class="p-side-navigation__toggle--in-drawer js-drawer-toggle"
-                                aria-controls="drawer">
-                                Toggle side navigation
-                            </a>
-                        </div>
-                        <h3>Side navigation</h3>
+        <div class="katalog-nav" id="nav">
+            <a href="#" class="close-nav">close</a>
+            <ul>
+                {% for page in pages %}
+                    {% if page.pages %}
+                    <li>
+                        <strong>{{ page.title }}</strong>
                         <ul>
-                            {% for page in pages %}
-                               {% if page.pages %}
+                            {% for sub in page.pages %}
                                 <li>
-                                    <strong>{{ page.title }}</strong>
-                                    <ul>
-                                        {% for sub in page.pages %}
-                                            <li>
-                                                <a {% if sub.path == currentPage %}aria-current="page" href="#"{% else %} href="{{ sub.path }}"{% endif %}>{{ sub.title }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
+                                    <a {% if sub.path == currentPage %}aria-current="page" href="#"{% else %} href="{{ sub.path }}"{% endif %}>{{ sub.title }}</a>
                                 </li>
-                               {% else %}
-                                <li>
-                                    <a {% if page.path == currentPage %}aria-current="page" href="#"{% else %} href="{{ page.path }}"{% endif %}>{{ page.title }}</a>
-                                </li>
-                                {% endif %}
                             {% endfor %}
                         </ul>
-                    </div>
-                </nav>
-            </aside>
-            <main class="col-9" id="main-content">{{ body }}</main>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a {% if page.path == currentPage %}aria-current="page" href="#"{% else %} href="{{ page.path }}"{% endif %}>{{ page.title }}</a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="katalog-content">
+            <div class="katalog-content-inner">
+            {{ body }}
+            </div>
         </div>
     </div>
     <script>

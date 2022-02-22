@@ -51,7 +51,10 @@ export const parse = async (config: Config, output: string) => {
     emptyDirSync(outputDir);
     copyRuntime(outputDir);
     console.log('✅ Copied Runtime');
-    copyAssets(config.stylesheets, outputDir);
+    copyAssets([
+        ...config.stylesheets,
+        config.logoSrc
+    ], outputDir);
     console.log('✅ Copied Assets');
     const index = readFileSync(__dirname + '/../templates/index.liquid', 'utf-8');
 
@@ -69,11 +72,9 @@ export const parse = async (config: Config, output: string) => {
         const content = await md.process(await read(file));
 
         const html = engine.parseAndRenderSync(index, {
-            title: config.title,
+            ...config,
             body: content.toString(),
-            pages: config.pages,
-            currentPage: page.path,
-            stylesheets: config.stylesheets
+            currentPage: page.path
         });
         const target = join(
             outputDir,

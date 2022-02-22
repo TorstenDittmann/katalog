@@ -11,7 +11,6 @@ import { fileURLToPath } from "url";
 import server from "@compodoc/live-server";
 
 const program = new Command();
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 program
   .name('string-util')
@@ -44,7 +43,9 @@ program
       parse(config, args.output);
       console.log('✅ Generated Pages');
       const files = [
-        join(cwd(), args.config)
+        join(cwd(), args.config),
+        '../templates/index.liquid',
+        ...config.stylesheets
       ];
       config.pages.forEach(page => {
         if (page.pages) {
@@ -61,7 +62,7 @@ program
 
       watch(files, {
         ignoreInitial: true
-      }).on('all', (event, path) => {
+      }).on('all', () => {
         parse(config, args.output);
         console.log('✅ Generated Pages');
       });

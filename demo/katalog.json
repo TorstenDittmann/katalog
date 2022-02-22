@@ -1,6 +1,6 @@
 {
   "title": "@appwrite/ui",
-  "logoSrc": "/logo.svg",
+  "logoSrc": "logo.svg",
   "stylesheets": [
     "styles.css"
   ],
