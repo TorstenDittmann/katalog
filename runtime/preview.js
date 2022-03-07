@@ -15,34 +15,18 @@ export const createPreviewElement = () => {
                 const container = document.createElement('div');
                 container.classList.add('katalog-container');
 
-                const style = document.createElement('style');
-                style.innerHTML = `
-                    .katalog-source {
-                        display: none;
-                        white-space: pre;
-                    }
-                    .katalog-source.show {
-                        display: block;
-                    }
-                    .katalog-preview {
-                        border: none;
-                        display: block;
-                        width: 100%;
-                    }
-                    .katalog-preview.katalog-preview-isolated > * {
-                        position: revert;
-                    }
-                `;
+                const stylesheet = document.createElement('link');
+                stylesheet.setAttribute('rel', 'stylesheet');
+                stylesheet.setAttribute('href', '/_runtime/preview.css');
 
                 const preview = document.createElement('div');
+                const imports = window.STYLESHEETS.map(sheet => `@import '/_assets/${sheet}';`);
                 preview.classList.add('katalog-preview');
                 if (this.isolated) {
                     preview.classList.add('katalog-preview-isolated')
                 }
-                preview.innerHTML = `
-                    <style>${window.STYLESHEETS.map(s => `@import '/_assets/${s}';`).join('\n')}</style>
-                    ${this.content}
-                `;
+                preview.innerHTML = `<style>${imports}</style>`;
+                preview.innerHTML += this.content;
 
                 const sourceCode = document.createElement('code')
                 sourceCode.classList.add('katalog-source');
@@ -56,7 +40,7 @@ export const createPreviewElement = () => {
                 sourceButton.classList.add('p-button', 'is-small');
                 sourceButton.innerHTML = 'source';
 
-                container.appendChild(style);
+                container.appendChild(stylesheet);
                 container.appendChild(preview);
                 this.insertAdjacentElement('afterend', this.source);
                 this.insertAdjacentElement('afterend', sourceButton);

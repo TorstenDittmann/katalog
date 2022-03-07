@@ -23,7 +23,7 @@
         .katalog-container {
             display: grid;
             grid-template-columns: 16em 1fr;
-            grid-template-rows: 200px 1fr;
+            grid-template-rows: 12em 1fr;
             gap: 0px 0px;
             grid-template-areas:
                 "logo header"
@@ -38,6 +38,20 @@
         .katalog-header {
             grid-area: header;
             background-color: #f02e65;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 1.5em;
+        }
+        .katalog-header h2,
+        .katalog-header h1 {
+            color: white;
+            margin: 0;
+        }
+        .katalog-header h2 {
+            color: white;
+            opacity: 0.5;
         }
         .katalog-nav {
             grid-area: nav;
@@ -49,6 +63,7 @@
         @media (max-width: 640px) {
             .katalog-container {
                 grid-template-columns: 1fr;
+                height: 100vh;
                 grid-template-rows: 1fr;
                 gap: 0px 0px;
                 grid-template-areas:
@@ -56,6 +71,9 @@
                     "header"
                     "nav"
                     "content";
+            }
+            .katalog-logo {
+                display: none;
             }
             .katalog-nav {
                 height: 100vh;
@@ -68,15 +86,22 @@
             .katalog-nav:target {
                 display: block;
             }
+            .katalog-header {
+                height: 4rem;
+            }
             .close-nav,
             .open-nav {
                 display:initial;
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                text-decoration: none;
+                font-size: 3em;
             }
         }
         .katalog-content {
             grid-area: content;
             overflow: auto;
-            max-height: calc(100vh - 200px);
         }
         .katalog-content .katalog-content-inner {
             max-width: 64em;
@@ -86,6 +111,10 @@
             list-style-type: none;
             margin: 0;
             padding: 0;
+            position: sticky;
+            top: 0;
+            max-height: 100vh;
+            overflow: auto;
         }
         .katalog-nav li strong {
             padding: 1rem .5rem;
@@ -101,6 +130,14 @@
             background-color: #f02e65;
             color: white;
         }
+        .katalog-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+        .katalog-footer a {
+            text-decoration: none;
+            color: #f02e65;
+        }
         .u-hide {
             display: none;
         }
@@ -110,13 +147,13 @@
 <body>
     <div class="katalog-container">
         <div class="katalog-logo">
-            <a href="#nav" class="open-nav">Menu</a>
             <a class="p-navigation__item" href="#">
                 <img class="p-navigation__image"
                     src="/_assets/{{ logoSrc }}" alt="Canonical"
                     width="95" />
             </a>
         </div>
+        <a href="#nav" class="open-nav">🍔</a>
         <div class="katalog-header">
             {% comment %} <form id="search" class="p-search-box u-no-margin--bottom">
                 <input 
@@ -145,9 +182,11 @@
                     <i class="p-icon--search">Search</i>
                 </button>
             </form> {% endcomment %}
+            <h2>{{ title }}</h2>
+            <h1>{{ currentPage.title }}</h1>
         </div>
         <div class="katalog-nav" id="nav">
-            <a href="#" class="close-nav">close</a>
+            <a href="#" class="close-nav">╳</a>
             <ul>
                 {% for page in pages %}
                     {% if page.pages %}
@@ -156,14 +195,14 @@
                         <ul>
                             {% for sub in page.pages %}
                                 <li>
-                                    <a {% if sub.path == currentPage %}aria-current="page" href="#"{% else %} href="{{ sub.path }}"{% endif %}>{{ sub.title }}</a>
+                                    <a {% if sub.path == currentPage.path %}aria-current="page" href="#"{% else %} href="{{ sub.path }}"{% endif %}>{{ sub.title }}</a>
                                 </li>
                             {% endfor %}
                         </ul>
                     </li>
                     {% else %}
                     <li>
-                        <a {% if page.path == currentPage %}aria-current="page" href="#"{% else %} href="{{ page.path }}"{% endif %}>{{ page.title }}</a>
+                        <a {% if page.path == currentPage.path %}aria-current="page" href="#"{% else %} href="{{ page.path }}"{% endif %}>{{ page.title }}</a>
                     </li>
                     {% endif %}
                 {% endfor %}
@@ -172,6 +211,17 @@
         <div class="katalog-content">
             <div class="katalog-content-inner">
             {{ body }}
+                <hr>
+                <footer class="katalog-footer">
+                    {% if prevPage %}
+                    <a href="{{ prevPage.path }}"><h3><- {{ prevPage.title }}</h3></a>
+                    {% else %}
+                    <span></span>
+                    {% endif %}
+                    {% if nextPage %}
+                    <a href="{{ nextPage.path }}"><h3>{{ nextPage.title }} -></h3></a>
+                    {% endif %}
+                </footer>
             </div>
         </div>
     </div>

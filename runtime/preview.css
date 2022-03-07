@@ -1,0 +1,15 @@
+.katalog-source {
+    display: none;
+    white-space: pre;
+}
+.katalog-source.show {
+    display: block;
+}
+.katalog-preview {
+    border: none;
+    display: block;
+    width: 100%;
+}
+.katalog-preview.katalog-preview-isolated > * {
+    position: revert;
+}

@@ -3,17 +3,15 @@ import { emptyDirSync, copySync, copy } from "fs-extra";
 import { dirname, join } from "path";
 import { cwd, exit } from "process";
 import { Liquid } from 'liquidjs';
-// import { preview_plugin } from "./preview";
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkDirective from 'remark-directive'
 import remarkRehype from 'remark-rehype'
 import rehypeFormat from 'rehype-format'
 import rehypeStringify from 'rehype-stringify'
-// import { visit } from 'unist-util-visit'
-// import { h } from 'hastscript'
 import {read} from 'to-vfile'
-import { myRemarkPlugin } from "./preview.js";
+import { previewBlock } from "./blocks/preview.js";
+import { colorBlock } from "./blocks/color.js";
 import { fileURLToPath } from "url";
 
 export type Page = {
@@ -35,7 +33,8 @@ const engine = new Liquid();
 const md = unified()
     .use(remarkParse)
     .use(remarkDirective)
-    .use(myRemarkPlugin)
+    .use(previewBlock)
+    .use(colorBlock)
     .use(remarkRehype, {allowDangerousHtml: true})
     .use(rehypeFormat)
     .use(rehypeStringify, {allowDangerousHtml: true});
@@ -74,8 +73,11 @@ export const parse = async (config: Config, output: string) => {
         const html = engine.parseAndRenderSync(index, {
             ...config,
             body: content.toString(),
-            currentPage: page.path
+            currentPage: page,
+            nextPage: nextPage(page, config.pages),
+            prevPage: prevPage(page, config.pages)
         });
+
         const target = join(
             outputDir,
             page.path,
@@ -100,6 +102,29 @@ export const parse = async (config: Config, output: string) => {
         }
         await generate(page);
     });
+}
+const normalizePages = (pages: Page[]): Page[] => pages.map(p => p.pages ? p.pages : p).flat();
+const nextPage = (page: Page, pages: Page[]): Page|undefined => {
+    const normalizedPages = normalizePages(pages);
+    const nextIndex = normalizedPages.findIndex(p => p.path && p.path === page.path) + 1;
+
+    if (nextIndex === 0) {
+        throw new Error("Error");
+    } else if (nextIndex >= normalizedPages.length) {
+        return undefined;
+    }
+    return normalizedPages[nextIndex];
+}
+const prevPage = (page: Page, pages: Page[]): Page|undefined => {
+    const normalizedPages = normalizePages(pages);
+    const prevIndex = normalizedPages.findIndex(p => p.path && p.path === page.path) - 1;
+
+    if (prevIndex === -2) {
+        throw new Error("Error");
+    } else if (prevIndex === -1) {
+        return undefined;
+    }
+    return normalizedPages[prevIndex];
 }
 const copyRuntime = (outputDir: string) => {
     copySync(join(__dirname, '../runtime'), join(

@@ -3,7 +3,7 @@ import { Plugin } from "unified"
 import { visit } from "unist-util-visit"
 import { h } from 'hastscript'
 
-export const myRemarkPlugin: Plugin<[], Root> = () => {
+export const previewBlock: Plugin<[], Root> = () => {
     return (tree, file) => {
         visit(tree, (node) => {
             if (
