@@ -52,14 +52,14 @@
       "title": "Examples",
       "pages": [
         {
-          "path": "/elements/button",
+          "path": "/examples/button",
           "title": "Button",
-          "src": "elements/button.md"
+          "src": "examples/button.md"
         },
         {
-          "path": "/elements/pill",
+          "path": "/examples/pill",
           "title": "Pill",
-          "src": "elements/pill.md"
+          "src": "examples/pill.md"
         }
       ]
     }
