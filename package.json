@@ -1,6 +1,6 @@
 {
   "name": "katalog",
-  "version": "1.0.0",
+  "version": "0.0.0^1",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -13,23 +13,23 @@
     "demo:dev": "npm run build && cd demo && node ../build/cli.js dev --output ../output"
   },
   "keywords": [],
-  "author": "",
+  "author": "Torsten Dittmann",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/markdown-it": "^12.2.3",
-    "@types/node": "^17.0.18",
-    "@types/yargs": "17.0.0",
-    "typescript": "^4.5.5"
+    "@types/node": "^17.0.25",
+    "@types/yargs": "^17.0.10",
+    "typescript": "^4.6.3"
   },
   "dependencies": {
     "@compodoc/live-server": "^1.2.3",
     "chokidar": "^3.5.3",
-    "commander": "^9.0.0",
-    "fs-extra": "^9.1.0",
+    "commander": "^9.2.0",
+    "fs-extra": "^10.1.0",
     "hastscript": "^7.0.2",
-    "liquidjs": "^9.34.0",
+    "liquidjs": "^9.37.0",
     "mdast": "^3.0.0",
     "rehype-format": "^4.0.1",
     "rehype-stringify": "^9.0.3",
@@ -37,8 +37,7 @@
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
     "to-vfile": "^7.2.3",
-    "unified": "^10.1.1",
-    "unist-util-visit": "^4.1.0",
-    "yargs": "17.0.0"
+    "unified": "^10.1.2",
+    "unist-util-visit": "^4.1.0"
   }
 }

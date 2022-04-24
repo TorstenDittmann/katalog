@@ -1,19 +1,18 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
-import { emptyDirSync, copySync, copy } from "fs-extra";
-import { dirname, join } from "path";
-import { cwd, exit } from "process";
-import { Liquid } from 'liquidjs';
-import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkDirective from 'remark-directive'
 import remarkRehype from 'remark-rehype'
 import rehypeFormat from 'rehype-format'
-import rehypeStringify from 'rehype-stringify'
-import {read} from 'to-vfile'
+import rehypeStringify from 'rehype-stringify';
+import fsExtra from "fs-extra";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { dirname, join } from "path";
+import { cwd, exit } from "process";
+import { Liquid } from 'liquidjs';
+import { unified } from 'unified'
+import { read } from 'to-vfile'
 import { previewBlock } from "./blocks/preview.js";
-import { colorBlock } from "./blocks/color.js";
 import { fileURLToPath } from "url";
-
+const { emptyDirSync, copySync, copy } = fsExtra;
 export type Page = {
     title: string;
     src?: string;
@@ -34,10 +33,9 @@ const md = unified()
     .use(remarkParse)
     .use(remarkDirective)
     .use(previewBlock)
-    .use(colorBlock)
-    .use(remarkRehype, {allowDangerousHtml: true})
+    .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeFormat)
-    .use(rehypeStringify, {allowDangerousHtml: true});
+    .use(rehypeStringify, { allowDangerousHtml: true });
 
 export const parse = async (config: Config, output: string) => {
     const outputDir = join(
@@ -104,7 +102,7 @@ export const parse = async (config: Config, output: string) => {
     });
 }
 const normalizePages = (pages: Page[]): Page[] => pages.map(p => p.pages ? p.pages : p).flat();
-const nextPage = (page: Page, pages: Page[]): Page|undefined => {
+const nextPage = (page: Page, pages: Page[]): Page | undefined => {
     const normalizedPages = normalizePages(pages);
     const nextIndex = normalizedPages.findIndex(p => p.path && p.path === page.path) + 1;
 
@@ -115,7 +113,7 @@ const nextPage = (page: Page, pages: Page[]): Page|undefined => {
     }
     return normalizedPages[nextIndex];
 }
-const prevPage = (page: Page, pages: Page[]): Page|undefined => {
+const prevPage = (page: Page, pages: Page[]): Page | undefined => {
     const normalizedPages = normalizePages(pages);
     const prevIndex = normalizedPages.findIndex(p => p.path && p.path === page.path) - 1;
 

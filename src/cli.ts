@@ -2,11 +2,10 @@
 
 import { Command } from "commander";
 import { readFileSync } from "fs";
-import { dirname, join } from "path";
+import { join } from "path";
 import { cwd, exit } from "process";
 import { Config, parse } from "./parser.js";
 import { watch } from "chokidar";
-import { fileURLToPath } from "url";
 // @ts-ignore
 import server from "@compodoc/live-server";
 

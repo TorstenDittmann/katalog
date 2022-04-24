@@ -1,3 +1,4 @@
+```json
 {
   "title": "@appwrite/ui",
   "logoSrc": "logo.svg",
@@ -45,11 +46,16 @@
           "path": "/configuration/imports",
           "title": "Imports",
           "src": "configuration/imports.md"
+        },
+        {
+          "path": "/configuration/theming",
+          "title": "Theming",
+          "src": "configuration/theming.md"
         }
       ]
     },
     {
-      "title": "Examples",
+      "title": "Elements",
       "pages": [
         {
           "path": "/elements/button",
@@ -60,8 +66,29 @@
           "path": "/elements/pill",
           "title": "Pill",
           "src": "elements/pill.md"
+        },
+        {
+          "path": "/elements/input",
+          "title": "Input",
+          "src": "elements/input.md"
+        }
+      ]
+    },
+    {
+      "title": "Components",
+      "pages": [
+        {
+          "path": "/components/upload-box",
+          "title": "Upload Box",
+          "src": "components/upload-box.md"
+        },
+        {
+          "path": "/components/upload-image",
+          "title": "Upload Image",
+          "src": "components/upload-image.md"
         }
       ]
     }
   ]
 }
+```
